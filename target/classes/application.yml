@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: bootcamp
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/onboardingEmployees?authSource=admin&retryWrites=true&w=majority
+
+server:
+  port: 9090
+
+logging:
+  level :
+    root : DEBUG
