@@ -2,14 +2,13 @@ package in.clear.bootcamp.service.impl;
 
 import in.clear.bootcamp.dto.Creation;
 import in.clear.bootcamp.dto.DepartmentCount;
-import in.clear.bootcamp.dto.EmployeeSummaryDto;
-import in.clear.bootcamp.helper.CSVHelper;
 import in.clear.bootcamp.dto.Employee;
 import in.clear.bootcamp.model.EmployeeModel;
 import in.clear.bootcamp.repository.EmployeeRepository;
 import in.clear.bootcamp.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,9 +19,6 @@ import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import static java.lang.String.valueOf;
@@ -31,11 +27,7 @@ import static java.lang.String.valueOf;
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-    private final CSVHelper csvHelper;
-
     private final EmployeeRepository employeeRepository;
-
-    private final Map<String, List<Employee>> data = new HashMap<>();
 
     @Override
     public Creation upload(Employee employee) {
@@ -105,6 +97,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 //            }
 //        }
         EmployeeModel employeeModel = employeeRepository.findByUserId(userId);
+
+        if (employeeModel == null) {
+            log.warn("Employee not found for userId: {}", userId);
+            try {
+                throw new Exception("Employee not found for userId: " + userId);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         Employee employee = new Employee();
         employee.setName(employeeModel.getName());
         employee.setEmail(employeeModel.getEmail());
@@ -125,11 +127,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
-
-    @Override
-    public EmployeeSummaryDto getSummary(String userId) {
-        return employeeRepository.getSummary(userId);
-    }
 
     @Override
     public String modifyEmployee(String userId , String jsonResponse){

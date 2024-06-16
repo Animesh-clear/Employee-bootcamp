@@ -7,6 +7,8 @@ import in.clear.bootcamp.dto.EmployeeSummaryDto;
 import in.clear.bootcamp.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,9 +28,15 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/api/employees/{id}")
-    public Employee getEmployee(
+    public ResponseEntity<Employee> getEmployee(
             @PathVariable String id) {
-        return employeeService.getEmployeebyId(id);
+        try {
+            Employee employee = employeeService.getEmployeebyId(id);
+            return ResponseEntity.ok(employee);
+        }  catch (Exception ex) {
+            // Log the exception or handle it as needed
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping(path = "/api/employees/{id}")

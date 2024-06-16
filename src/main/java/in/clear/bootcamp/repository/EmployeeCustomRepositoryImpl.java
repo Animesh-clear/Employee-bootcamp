@@ -32,22 +32,10 @@ public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
         mongoTemplate.insertAll(employees);
     }
 
-    @Override
-    public EmployeeSummaryDto getSummary(String userId) {
-        MatchOperation matchOperation = Aggregation.match(Criteria.where("userid").is(userId));
-        GroupOperation groupOperation = group("userid").count().as("count")
-                                            .sum("taxValue").as("totalTaxValue")
-                                            .sum("totalValue").as("totalValue");
-
-        Aggregation aggregation = newAggregation(matchOperation, groupOperation);
-
-        return mongoTemplate.aggregate(aggregation, EmployeeModel.class, EmployeeSummaryDto.class)
-                   .getUniqueMappedResult();
-    }
 
     @Override
     public void updateEmployee(String userId, Map<String,Object> updateFields) {
-        Query query = new Query(Criteria.where("_id").is(userId));
+        Query query = new Query(Criteria.where("userId").is(userId));
         Update update = new Update();
 
         updateFields.forEach((field, value) -> {
@@ -60,7 +48,7 @@ public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
 
     @Override
     public void removeEmployee(String userId){
-        Query query = new Query(Criteria.where("_id").is(userId));
+        Query query = new Query(Criteria.where("userId").is(userId));
         mongoTemplate.remove(query, EmployeeModel.class);
     }
 

@@ -14,7 +14,6 @@ public interface EmployeeService {
     Employee getEmployee(String userId);
     Employee getEmployeebyId(String userId);
 
-    EmployeeSummaryDto getSummary(String userId);
     String modifyEmployee (String userId, String jsonResponse);
     String deleteEmployee(String userId);
     double avgExperience();

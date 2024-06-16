@@ -11,8 +11,6 @@ public interface EmployeeCustomRepository {
 
     void saveEmployees(List<EmployeeModel> employees);
 
-    EmployeeSummaryDto getSummary(String userId);
-
     void updateEmployee(String userId,  Map<String,Object> updateFields);
 
     void removeEmployee(String userId);
