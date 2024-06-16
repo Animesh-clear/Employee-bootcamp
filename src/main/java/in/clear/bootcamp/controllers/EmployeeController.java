@@ -51,33 +51,5 @@ public class EmployeeController {
         return employeeService.allDeps();
     }
 
-//    @PutMapping(path = "/upload")
-//    public List<Employee> uploadFile(
-//        @RequestBody MultipartFile file,
-//        @RequestHeader("user-id") String userId) {
-//        return employeeService.upload(file, userId);
-//    }
-//
-//
-//    @GetMapping(path = "/invoice/{invoiceNumber}")
-//    public Employee getInvoice(
-//        @PathVariable String invoiceNumber,
-//        @RequestHeader("user-id") String userId) {
-//        log.info("path variable : {};", invoiceNumber);
-//        return employeeService.getInvoice(invoiceNumber, userId);
-//    }
-//
-//    @GetMapping(path = "/invoice")
-//    public Employee getInvoiceQueryParam(
-//        @RequestParam String invoiceNumber,
-//        @RequestHeader("user-id") String userId) {
-//        log.info("query parameter : {};", invoiceNumber);
-//        return employeeService.getInvoice(invoiceNumber, userId);
-//    }
-//
-//    @GetMapping(path = "/summary")
-//    public EmployeeSummaryDto getSummary(@RequestHeader("user-id") String userId) {
-//        return employeeService.getSummary(userId);
-//    }
 
 }
